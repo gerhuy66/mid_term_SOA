@@ -1,0 +1,8 @@
+.subject{
+    width: 80px;
+    height: 80px;
+}
+.subject:hover{
+    width: 100px;
+    height: 100px;
+}

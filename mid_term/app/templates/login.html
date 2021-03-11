@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+</head>
+<body>
+    {% from "_formhelpers.html" import render_field %}
+	<form method=post>
+	<dl>
+		{{ render_field(form.username) }}
+		{{ render_field(form.password) }}
+	</dl>
+	<p>{{ render_field(form.submit) }}
+	</form>
+</body>
+</html>
