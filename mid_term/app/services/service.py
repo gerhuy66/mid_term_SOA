@@ -7,3 +7,5 @@ def testService():
     querry= "select * from student where s_id = %s"
     cursor.execute(querry,(student_id))
     return cursor.fetchone()
+
+#test

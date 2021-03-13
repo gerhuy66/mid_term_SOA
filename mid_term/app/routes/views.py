@@ -1,42 +1,37 @@
 import flask
 from app import app
-from flask import json, render_template, request, session, Response,jsonify,redirect,url_for
-from flask_login import login_required,login_user,logout_user
+from flask import json, render_template, request, session, Response,jsonify,redirect,url_for,flash
+from flask_login import login_required,login_user,logout_user,current_user
 
 @app.route("/",methods=['GET','POST'])
 @login_required
 def index():
     return render_template('index.html')
 
-from wtforms import Form, BooleanField, StringField, PasswordField, validators,SubmitField
 from flask_wtf import FlaskForm
-class loginForm(FlaskForm):
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    password = PasswordField('Password', [
-        validators.DataRequired()
-    ])
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, Length, Email
+class LoginForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64),
+    Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
 
-from app import models
+from app.models import User
 @app.route("/login",methods=['GET','POST'])
 def login():
-    form = loginForm(request.form)
-    if form.is_submitted():
-        # Login and validate the user.
-        # user should be an instance of your `User` class
-        # models.load_user(user)
-
-        user = models.User()
-        user.username = form.username
-        user.password = form.password
-        if user.username.data == "admin":
-            if user.password.data == "123":
-                login_user(user)
-                return redirect(url_for("index"))
-            else:
-                return('Wrong pass')
-        else:
-            return('Login fail')
+    form = LoginForm()
+    method = request.method
+    if method == 'POST':
+        user = User.User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.verify(form.password.data):
+            login_user(user, form.remember_me.data)
+            next = request.args.get('next')
+            if next is None or not next.startswith('/'):
+                next = url_for('index')
+            return redirect(next)
+        flash('Invalid username or password.')
     return render_template('login.html', form=form)
 
 
@@ -45,6 +40,9 @@ def login():
 def about():
     return "All about Flask"
 
+@app.route("/tution")
+def tutioion():
+    return render_template("tution.html")
 
 from app.services import service
 @app.route("/test")
@@ -59,3 +57,8 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+@app.route("/userl")
+def getUsrLogin():
+    resp = {"result":200,"data":current_user.to_json()}
+    return jsonify(resp)
+#test
