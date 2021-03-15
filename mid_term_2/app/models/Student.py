@@ -9,12 +9,14 @@ class Student(mysql_db.Model):
     fname = mysql_db.Column(mysql_db.String(20))
     phone = mysql_db.Column(mysql_db.String(20))
     email = mysql_db.Column(mysql_db.String(20))
+    fee = mysql_db.Column(mysql_db.Float)
     
-    def __init__(self,studentId,fname,phone="",email=""):
+    def __init__(self, studentId, fname, phone="", email="", fee = 0):
         self.studentId = studentId
         self.fname = fname
         self.phone = phone
         self.email = email
+        self.fee = fee
 
     def create(self):
         mysql_db.session.add(self)
@@ -22,7 +24,7 @@ class Student(mysql_db.Model):
         return self
 
     def __repr__(self):
-        return '<Student %r,%r,%r, %r, %r>' % (self.id,self.studentId,self.fname,self.phone,self.email)
+        return '<Student %r, %r, %r, %r, %r, %r>' % (self.id, self.studentId, self.fname, self.phone, self.email, self.fee)
         
 class StudentSchema(ModelSchema):
     class Meta(ModelSchema.Meta):
@@ -34,3 +36,4 @@ class StudentSchema(ModelSchema):
     studentId = fields.String(required=True)
     phone = fields.String(required=False)
     email = fields.String(required=True)
+    fee = fields.Number(required=True)

@@ -11,32 +11,22 @@ class User(UserMixin, mysql_db.Model):
     email = mysql_db.Column(mysql_db.String(64), unique=False, index=True)
     username = mysql_db.Column(mysql_db.String(64), unique=False, index=True)
     password_hash = mysql_db.Column(mysql_db.String(128))
-    roles = mysql_db.Column(mysql_db.Integer)
-    
-    @property
-    def password(self):
-        raise AttributeError('password is not a readable attribute')
+    balance = mysql_db.Column(mysql_db.Float)
 
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        return check_password_hash(self.password_hash, password)
 
     def create(self):
         mysql_db.session.add(self)
         mysql_db.session.commit()
         return self
 
-    def __init__(self, username, email,password_hash,roles = 0):
+    def __init__(self, username, email,password_hash,balance):
         self.username = username
         self.email = email
         self.password_hash = password_hash
-        self.roles = roles
+        self.balance = balance
 
     def __repr__(self):
-        return '<User %r,%r,%r,%r>' % (self.username,self.email,self.username,self.password_hash)
+        return '<User %r,%r,%r,%r,%r>' % (self.username,self.email,self.username,self.password_hash,self.balance)
 
     def verify(self,input_password):
         return self.password_hash == input_password
@@ -49,4 +39,4 @@ class UserSchema(ModelSchema):
     email = fields.String(required=True)
     username = fields.String(required=False)
     password_hash = fields.String(required=True)
-    roles = fields.Number(required=False)
+    balance = fields.Number(required=True)
