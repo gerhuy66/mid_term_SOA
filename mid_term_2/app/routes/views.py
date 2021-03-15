@@ -13,8 +13,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Length, Email
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Length(1, 64),
-    Email()])
+    email = StringField('Email', validators=[DataRequired(), Length(1, 64),Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Keep me logged in')
     submit = SubmitField('Log In')
@@ -92,8 +91,8 @@ def createStu():
     rs = stu_schema.dump(student.create())
     return make_response(jsonify({"student": rs}),201)
 
-@app.route("getRoute/<userId>",methods=['GET'])
-def getRole(userId):
-    user = User.User.query.filter_by(userName=userId)
-    return make_response(jsonify({"Roles": user.roles}),201)
+# @app.route("getRoute/<userId>",methods=['GET'])
+#def getRole(userId):
+#    user = User.User.query.filter_by(userName=userId)
+#    return make_response(jsonify({"Roles": user.roles}),201)
     
