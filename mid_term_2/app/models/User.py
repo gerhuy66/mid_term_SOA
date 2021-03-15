@@ -3,6 +3,7 @@ from flask_login import UserMixin
 from app.database import mysql_db
 from marshmallow_sqlalchemy import ModelSchema
 from marshmallow import fields
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(UserMixin, mysql_db.Model):
     __tablename__ = 'users'
@@ -12,6 +13,16 @@ class User(UserMixin, mysql_db.Model):
     password_hash = mysql_db.Column(mysql_db.String(128))
     roles = mysql_db.Column(mysql_db.Integer)
     
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def create(self):
         mysql_db.session.add(self)
