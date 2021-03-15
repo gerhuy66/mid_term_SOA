@@ -2,25 +2,17 @@ import flask
 from app import app
 from flask import json, render_template, request, session, Response,jsonify,redirect,url_for,flash,make_response
 from flask_login import login_required,login_user,logout_user,current_user
-from app.models import User,Student,Role
+from app.models import User,Student
+from app.forms import forms
 
 @app.route("/",methods=['GET','POST'])
 @login_required
 def index():
     return render_template('index.html',current_user =current_user)
 
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Length, Email
-class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Length(1, 64),Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log In')
-
 @app.route("/login",methods=['GET','POST'])
 def login():
-    form = LoginForm()
+    form = forms.LoginForm()
     method = request.method
     if method == 'POST':
         user = User.User.query.filter_by(email=form.email.data).first()
@@ -91,8 +83,8 @@ def createStu():
     rs = stu_schema.dump(student.create())
     return make_response(jsonify({"student": rs}),201)
 
-# @app.route("getRoute/<userId>",methods=['GET'])
-#def getRole(userId):
-#    user = User.User.query.filter_by(userName=userId)
-#    return make_response(jsonify({"Roles": user.roles}),201)
+''' @app.route("getRoute/<userId>",methods=['GET'])
+def getRole(userId):
+    user = User.User.query.filter_by(userName=userId)
+    return make_response(jsonify({"Roles": user.roles}),201) '''
     
