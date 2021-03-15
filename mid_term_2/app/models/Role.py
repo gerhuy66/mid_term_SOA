@@ -6,5 +6,10 @@ class Role(mysql_db.Model):
     name = mysql_db.Column(mysql_db.String(64), unique=True)
     role_value = mysql_db.Column(mysql_db.Integer)
     
+
+    def __init__(self,name,role_value):
+        self.name = name
+        self.role_value = role_value
+
     def __repr__(self):
         return '<Role %r>' % self.name
