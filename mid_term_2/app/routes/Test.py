@@ -8,12 +8,12 @@ from app.models import User,Student
 def test2():
     return "test module success"
 
-@app.route("/test", methods =['GET','POST'])
-def test():
-    password = '123456A!'
+@app.route("/test/<studentId>", methods =['GET','POST'])
+def test(studentId):
+    ''' password = '123456A!'
     password1 = '123'
     password_hash = generate_password_hash(password)
-    return password_hash
+    return password_hash '''
 
     ''' form = forms.LoginForm()
     method = request.method
@@ -27,4 +27,4 @@ def test():
             return redirect(next)
         flash('Invalid username or password.')
     return render_template('login.html', form=form) '''
-
+    return studentId
