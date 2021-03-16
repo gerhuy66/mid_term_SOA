@@ -5,10 +5,10 @@ from marshmallow import fields
 class Student(mysql_db.Model):
     __tablename__ = 'students'
     id = mysql_db.Column(mysql_db.Integer, primary_key=True)
-    studentId = mysql_db.Column(mysql_db.String(20))
+    studentId = mysql_db.Column(mysql_db.String(20), unique=True)
     fname = mysql_db.Column(mysql_db.String(20))
     phone = mysql_db.Column(mysql_db.String(20))
-    email = mysql_db.Column(mysql_db.String(20))
+    email = mysql_db.Column(mysql_db.String(64))
     fee = mysql_db.Column(mysql_db.Float)
     
     def __init__(self, studentId, fname, phone="", email="", fee = 0):
@@ -25,7 +25,7 @@ class Student(mysql_db.Model):
 
     def __repr__(self):
         return '<Student %r, %r, %r, %r, %r, %r>' % (self.id, self.studentId, self.fname, self.phone, self.email, self.fee)
-        
+
 class StudentSchema(ModelSchema):
     class Meta(ModelSchema.Meta):
         model = Student
