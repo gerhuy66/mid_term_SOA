@@ -1,4 +1,4 @@
-from app.database import mysql_db
+''' from app.database import mysql_db
 class Tution(mysql_db.Model):
     __tablename__ = 'tutions'
     id = mysql_db.Column(mysql_db.Integer, primary_key=True)
@@ -17,3 +17,4 @@ class Tution(mysql_db.Model):
         
     def __repr__(self):
         return '<Tution %r>' % self.id
+ '''
