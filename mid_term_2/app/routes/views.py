@@ -1,4 +1,5 @@
 import flask
+from marshmallow.fields import Email
 from app import app
 from flask import json, render_template, request, session, Response,jsonify,redirect,url_for,flash,make_response
 from flask_login import login_required,login_user,logout_user,current_user
@@ -25,7 +26,6 @@ def login():
         flash('Invalid username or password.')
     return render_template('login.html', form=form)
 
-
 @app.route("/about")
 @login_required
 def about():
@@ -48,10 +48,15 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-@app.route("/userl")
+@app.route("/getUserLoginInfo",methods=['GET'])
+# @login_required
 def getUsrLogin():
-    resp = {"result":200,"data":current_user.to_json()}
-    return jsonify(resp)
+    
+    get_student = Student.Student.query.filter_by(email=current_user.email)
+    student_schema = Student.StudentSchema(many=True)
+    student = student_schema.dump(get_student)
+
+    return make_response(jsonify({"studentInfo":student}))
 
 @app.route("/getUsers",methods=['GET'])
 def getUsr():
@@ -87,4 +92,9 @@ def createStu():
 # def getRole(userId):
 #     user = User.User.query.filter_by(userName=userId)
 #     return make_response(jsonify({"Roles": user.roles}),201)
+
+@app.route("/getquare",methods=['GET'])
+def getQuare():
+    request.get_json()
+    return jsonify({"data":2*2})
     
