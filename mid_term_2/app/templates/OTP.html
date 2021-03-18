@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Get OTP</title>
+    </head>
+    <body>
+        <h2>Get OTP</h2>
+        <form action = "{{url_for('getOTP')}}" method="POST">
+            <input type="email" name="email" placeholder = "Email" required id="">
+            <input type="submit" value = "Send OTP"> 
+        </form>
+
+        {{msg}}
+    </body>
+</html>
+

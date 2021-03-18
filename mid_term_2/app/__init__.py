@@ -5,8 +5,10 @@ from flask_bootstrap import Bootstrap
 
 bootstrap = Bootstrap(app)
 
-from app.routes import Test,views,getTuition,getBalance
+from app.routes import Test,views,getTuition,getBalance, sendEmail
 from app.models import User,Role,Bank_Account,Tution,Student
+from app.services import mailService
+
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
 login_manager = LoginManager()
