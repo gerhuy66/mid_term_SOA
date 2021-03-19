@@ -43,7 +43,8 @@ html, body {
     .banner {
     position: relative;
     height: 210px;
-    background-image: url("/uploads/media/default/0001/02/328c356e9bba5add698e405d0059aa4207d8f1f6.jpeg");      background-size: cover;
+    background-size: cover;
+    background-image: linear-gradient(to top right,white,rgb(91, 91, 214));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -183,3 +184,9 @@ html, body {
     width: calc(50% - 8px);
     }
     }
+    #otp_button div:hover{
+        background-color: rgb(177, 79, 41);
+    }
+
+    
+    

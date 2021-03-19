@@ -32,6 +32,7 @@ def about():
     return "All about Flask"
 
 @app.route("/tution")
+@login_required
 def tutioion():
     return render_template("tution.html")
 
@@ -49,7 +50,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route("/getUserLoginInfo",methods=['GET'])
-# @login_required
+@login_required
 def getUsrLogin():
     
     get_student = Student.Student.query.filter_by(email=current_user.email)

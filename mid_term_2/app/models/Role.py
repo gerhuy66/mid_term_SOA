@@ -1,4 +1,4 @@
-''' from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship
 from app.database import mysql_db
 class Role(mysql_db.Model):
     __tablename__ = 'roles'
@@ -12,4 +12,4 @@ class Role(mysql_db.Model):
         self.role_value = role_value
 
     def __repr__(self):
-        return '<Role %r>' % self.name '''
+        return '<Role %r>' % self.name

@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <title>{% block title %}{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"></link>
+    <script src="{{url_for('static', filename='jquery-3.6.0.min.js')}}"></script>
+    <script src="{{url_for('static', filename='axios.js')}}"></script>
+    <script src="{{url_for('static', filename='nav_bar.js')}}"></script>
+    <link rel="stylesheet" href="{{url_for('static', filename='nav_bar.css')}}"></link>
+    {% endblock %}
+
+  </head>
+  <body onload="loadUserLoginInfo()">
+    <!-- begin nav bar -->
+    <div id="nav_bar">
+      <navbar>
+        <div class="navbar navbar-fixed-top navbar-inverse tabs paper-shadow-bottom-z-2">
+          <div class="container-fluid">
+            <ul class="navbar-body " style="list-style-type: none;">
+              <li><a href="/tution">Học Phí</a></li>
+              <li><a href="/logout">Đăng Xuất</a></li>
+
+            </ul>
+          </div>
+        </div>
+        <!--2 navbar for pushing 1 above after scrolling (Not Implemented yet.)-->
+      </navbar>
+      
+    </div> 
+    <!-- end nav bar -->
+    <div id="content" style="width:95vw;;height: 60vw;">
+      {% block content %}
+
+      {% endblock %}
+    </div>
+  </body>
+</html>

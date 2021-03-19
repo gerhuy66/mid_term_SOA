@@ -1,4 +1,4 @@
-''' from app.database import mysql_db
+from app.database import mysql_db
 class Bank_Account(mysql_db.Model):
     __tablename__ = 'bank_accounts'
     id = mysql_db.Column(mysql_db.Integer, primary_key=True)
@@ -12,4 +12,4 @@ class Bank_Account(mysql_db.Model):
         return self
 
     def __repr__(self):
-        return '<Bank_Account %r>' % self.id '''
+        return '<Bank_Account %r>' % self.id

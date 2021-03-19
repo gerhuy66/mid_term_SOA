@@ -31,6 +31,7 @@ class User(UserMixin, mysql_db.Model):
     def verify(self,input_password):
         return self.password_hash == input_password
 
+
 class UserSchema(ModelSchema):
     class Meta(ModelSchema.Meta):
         model = User

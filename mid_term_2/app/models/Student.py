@@ -23,6 +23,14 @@ class Student(mysql_db.Model):
         mysql_db.session.commit()
         return self
 
+    def to_json(self):
+        return {
+            "fname":self.fname,
+            "phone":self.phone,
+            "email":self.email,
+            "studentId":self.studentId
+        }
+
     def __repr__(self):
         return '<Student %r, %r, %r, %r, %r, %r>' % (self.id, self.studentId, self.fname, self.phone, self.email, self.fee)
 
