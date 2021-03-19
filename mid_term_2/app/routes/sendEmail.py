@@ -6,9 +6,10 @@ from flask_login import login_required,login_user,logout_user,current_user
 from app.models import User,Student
 from flask_mail import Mail, Message
 import pyotp
-import datetime, time
+import datetime
 from datetime import timedelta
 from app import services
+import random
 
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
@@ -17,36 +18,27 @@ app.config['MAIL_PASSWORD'] = 'aA!123456'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['SECRET_KEY'] = 'xxxxxxxxx'
-app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes = 5)
+
 
 mail = Mail(app)
 
-@app.route('/OTP')
+@app.route('/OTP', methods = ["GET", "POST"])
 def OTP():
-    return render_template('OTP.html')
-
-otp = pyotp.TOTP('base32secret3232')
-
-
-@app.route('/getOTP', methods=["GET","POST"])
-def getOTP():
     if request.method == "POST":
+        session['response'] = createOTP()
         email = request.form['email']
         subject = 'Mã OTP'
 
-        otp = pyotp.TOTP('base32secret3232')
-        time_otp = otp.now()
-        
         session.permanent = True
-        session['response'] = str(time_otp)
-        session.permanent = True
+        time = timedelta(seconds = 30)
+        if 'response' in session:
+            app.config['PERMANENT_SESSION_LIFETIME'] = time #minutes: set theo phút
         
         message = Message(subject, sender = 'ibankingmtsoa@gmail.com', recipients=[email])
-        body = 'Mã OTP của bạn là: ' + str(time_otp)
-        
+        body = 'Mã OTP của bạn là: ' + session['response']
         services.mailService.sendEmail(subject, email, body)
-
-        return render_template("enterOTP.html", email = email)
+        return render_template("enterOTP.html", email = email, time = time)
+    return render_template('OTP.html')
 
 @app.route('/otplogin', methods = ["GET", "POST"])
 def account():
@@ -59,3 +51,10 @@ def account():
         else:
             msg = "Sai OTP. Nhập lại mail để nhận OTP"
             return render_template('OTP.html', msg = msg)
+    else:
+        msg = "OTP hết hạn. Nhập lại mail để nhận OTP"
+        return render_template('OTP.html', msg = msg)
+
+def createOTP():
+    otp = pyotp.TOTP('base32secret3232',interval=1)
+    return otp.now()

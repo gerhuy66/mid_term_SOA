@@ -17,4 +17,4 @@ def sendEmail(subject, email, content):
     message = Message(subject, sender = 'ibankingmtsoa@gmail.com', recipients=[email])
     message.body = content
     mail.send(message)
-    return "Gửi mail xong đĩ mẹ m"
+    return True
