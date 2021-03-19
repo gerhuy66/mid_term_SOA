@@ -25,4 +25,4 @@ mysql_db.create_all()
 
 @app.shell_context_processor
 def make_shell_context():
-    return dict(db=mysql_db, User=User.User, Role=Role.Role,Student = Student.Student, Bank_Account = Bank_Account.Bank_Account, Tution = Tution.Tution)
+    return dict(db=mysql_db, User=User.User,Student = Student.Student, His = His.His)
