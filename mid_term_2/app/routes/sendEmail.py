@@ -7,19 +7,7 @@ from flask_mail import Mail, Message
 import pyotp
 import datetime
 from datetime import timedelta
-<<<<<<< HEAD
 from app.services import mailService
-=======
-from app import services
-import random
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'ibankingmtsoa@gmail.com'
-app.config['MAIL_PASSWORD'] = 'aA!123456'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
->>>>>>> 8d84738719a6552aa919058827f46a197a8a7f58
 app.config['SECRET_KEY'] = 'xxxxxxxxx'
 
 
@@ -28,16 +16,18 @@ mail = Mail(app)
 @app.route('/OTP', methods = ["GET", "POST"])
 def OTP():
     if request.method == "POST":
+        sessNm = current_user.username+"_OTP"
+        session[sessNm] = createOTP()
         email = request.json.get('email')
         subject = 'Mã OTP'
 
         session.permanent = True
-        time = timedelta(seconds = 30)
-        if 'response' in session:
+        time = timedelta(minutes = 5)
+        if sessNm in session:
             app.config['PERMANENT_SESSION_LIFETIME'] = time #minutes: set theo phút
         
         message = Message(subject, sender = 'ibankingmtsoa@gmail.com', recipients=[email])
-        body = 'Mã OTP của bạn là: ' + str(time_otp)
+        body = 'Mã OTP của bạn là: ' + session[sessNm]
         
         mailService.sendEmail(subject, email, body)
 

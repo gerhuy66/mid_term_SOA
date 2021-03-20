@@ -3,10 +3,11 @@
 
 {% block content %}
 <div class="testbox">
-  <form action="/">
+  <form action="">
     <div class="banner">
       <h1>Thanh Toán Học Phí</h1>
     </div>
+    <h3>Thông tin người thanh toán</h3>
     <div class="item">
       <p>Họ và tên</p>
       <div class="name-item">
@@ -26,8 +27,7 @@
       <input id="balance" type="text" name="name" disabled/>
     </div>
     <hr>
-    <hr>
-    <hr>
+    <h3>Thông tin thanh toán</h3>
     <div class="item">
       <p>Mã Số SV</p>
       <input id="stIdTb" onkeyup="calFee(event)" type="text" name="name"/>
@@ -41,10 +41,10 @@
     </div>
     <div class="item">
       <p>Nhập OTP</p>
-      <input style="width: 100px !important;" id="stdFee" type="text" name="name"/>
+      <input id="otp_value" onkeyup="validateOTP(event)" style="width: 100px !important;" id="stdFee" type="text" name="name"/>
     </div>
     <div class="btn-block">
-      <button type="submit" href="/">Gửi</button>
+      <button id="submitBtn" onclick="chargeStudentFee()">Gửi</button>
     </div>
   </form>
 </div>

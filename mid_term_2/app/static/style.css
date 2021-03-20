@@ -32,6 +32,7 @@ html, body {
     align-items: center;
     height: inherit;
     padding: 20px;
+    margin-top: 50px;
     }
     form {
     width: 100%;

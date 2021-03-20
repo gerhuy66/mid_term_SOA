@@ -27,13 +27,49 @@
 //     return "Success";
 // }
 
-async function recieveOTP(){
-    await axios.post("/getOTP",{
+function recieveOTP(){
+  let rp = axios.post("/OTP",{
         email:stdInfo.email
     }); 
+    alert("please check your email!");
 }
 let stdInfo;
+let validOtp;
+async function validateOTP(){
+    if($("#otp_value").val().length < 6)
+        return;
+    let rp = await axios.get(`/checkOTP/${$("#otp_value").val()}`);
+    if(rp.data.validate == "correct"){
+        validOtp = $("#otp_value").val();
+    }
+}
 
+async function chargeStudentFee(){
+    var balance = $("#balance").val();
+    var fee = $("#stdFee").val();
+    if(parseInt(balance) < parseInt(fee))
+    {
+        alert("Not enough money!");
+        return;
+    }
+    if($("#otp_value").val() == "")
+    {
+        alert("please input OTP");
+        return;
+    }else{
+        let ro = {
+            stdId:$("#stIdTb").val(),
+            fee:$("#stdFee").val(),
+            otp:$("#otp_value").val()
+        }
+        rp = await axios.post("/chargeStudentFee",ro);
+        if(rp.data.status == "fail"){
+            alert(rp.data.message);
+        }else{
+            alert("Success payment!");
+        }
+    }
+}
 
 async function loadUserLoginInfo(){
     let rp = await axios.get('/getUserLoginInfo');
@@ -52,6 +88,9 @@ async function loadUserLoginInfo(){
     var balanceRp = await axios.get(`/balance/${stdInfo.email}`); 
     var baln = balanceRp.data.balance;
     $("#balance").val(baln);
+
+
+    loadDataHistory();
     
 }
 async function calFee(ev){
@@ -85,3 +124,12 @@ function initView(){
 }
 
 
+async function loadDataHistory()
+{
+    let rp = await axios.post("/getHistory");
+    let datas = rp.data.his
+    datas.forEach(function(item){
+        let line = `<div>${item.datetime}--${item.studentId}--${item.amount}</div>`
+        $("#historyBox").append(line);
+    })
+}
