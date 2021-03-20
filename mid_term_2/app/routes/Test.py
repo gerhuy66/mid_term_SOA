@@ -3,10 +3,15 @@ from app import app
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import forms
 from app.models import User,Student
+import pyotp
+import datetime, time
 
 @app.route("/test2",methods=['GET'])
 def test2():
-    return "test module success"
+    totp = pyotp.TOTP('base32secret3232')
+    time.sleep(5)
+    return totp.now()
+    
 
 @app.route("/test/<studentId>", methods =['GET','POST'])
 def test(studentId):
