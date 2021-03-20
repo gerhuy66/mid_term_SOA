@@ -1,6 +1,5 @@
 import flask
 from app import app
-from app import config
 from flask import json, render_template, request, session, Response,jsonify,redirect,url_for,flash,make_response
 from flask_login import login_required,login_user,logout_user,current_user
 from app.models import User,Student
@@ -8,14 +7,7 @@ from flask_mail import Mail, Message
 import pyotp
 import datetime, time
 from datetime import timedelta
-from app import services
-
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'ibankingmtsoa@gmail.com'
-app.config['MAIL_PASSWORD'] = 'aA!123456'
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
+from app.services import mailService
 app.config['SECRET_KEY'] = 'xxxxxxxxx'
 app.config['PERMANENT_SESSION_LIFETIME'] =  timedelta(minutes = 5)
 
@@ -31,7 +23,7 @@ otp = pyotp.TOTP('base32secret3232')
 @app.route('/getOTP', methods=["GET","POST"])
 def getOTP():
     if request.method == "POST":
-        email = request.form['email']
+        email = request.json.get('email')
         subject = 'Mã OTP'
 
         otp = pyotp.TOTP('base32secret3232')
@@ -44,9 +36,9 @@ def getOTP():
         message = Message(subject, sender = 'ibankingmtsoa@gmail.com', recipients=[email])
         body = 'Mã OTP của bạn là: ' + str(time_otp)
         
-        services.mailService.sendEmail(subject, email, body)
+        mailService.sendEmail(subject, email, body)
 
-        return render_template("enterOTP.html", email = email)
+        return make_response(jsonify({"status":"send"}))
 
 @app.route('/otplogin', methods = ["GET", "POST"])
 def account():

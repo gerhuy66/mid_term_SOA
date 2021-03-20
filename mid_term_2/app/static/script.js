@@ -27,8 +27,10 @@
 //     return "Success";
 // }
 
-function recieveOTP(){
-    alert("OTP cua ban la : 14231");
+async function recieveOTP(){
+    await axios.post("/getOTP",{
+        email:stdInfo.email
+    }); 
 }
 let stdInfo;
 
@@ -47,6 +49,9 @@ async function loadUserLoginInfo(){
     $("#phoneTb").val(stdInfo.phone);
     $("#phoneTb").prop( "disabled", true );
 
+    var balanceRp = await axios.get(`/balance/${stdInfo.email}`); 
+    var baln = balanceRp.data.balance;
+    $("#balance").val(baln);
     
 }
 async function calFee(ev){

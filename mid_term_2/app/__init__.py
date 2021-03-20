@@ -5,7 +5,7 @@ from flask_bootstrap import Bootstrap
 
 bootstrap = Bootstrap(app)
 
-from app.routes import Test,views,getTuition,getBalance,getHistory
+from app.routes import Test,views,getTuition,getBalance,getHistory,sendEmail
 from app.models import User,Role,Bank_Account,Tution,Student,His
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
