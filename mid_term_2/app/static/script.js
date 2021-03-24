@@ -27,7 +27,7 @@
 //     return "Success";
 // }
 
-function recieveOTP(){
+async function recieveOTP(){
     var balance = $("#balance").val();
     var fee = $("#stdFee").val();
     if(parseInt(balance) < parseInt(fee))
@@ -36,11 +36,17 @@ function recieveOTP(){
         return;
     }
 
-  let rp = axios.post("/OTP",{
-        email:stdInfo.email
+  let rpo = await axios.post("/OTP",{
+        email:stdInfo.email,
+        stuId:$("#stIdTb").val()
     }); 
-    alert("please check your email!");
+    if(rpo.data.status == "fails"){
+        alert("There are no tuition fee!");
+    }else{   
+        alert("please check your email!");
+    }
 }
+
 let stdInfo;
 let validOtp;
 async function validateOTP(){

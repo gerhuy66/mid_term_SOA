@@ -20,6 +20,7 @@ def OTP():
         sessNm = current_user.username+"_OTP"
         session[sessNm] = createOTP()
         email = request.json.get('email')
+        studentid = request.json.get('stuId')
         subject = 'Mã OTP'
 
         session.permanent = True
@@ -30,9 +31,14 @@ def OTP():
         message = Message(subject, sender = 'ibankingmtsoa@gmail.com', recipients=[email])
         body = 'Mã OTP của bạn là: ' + session[sessNm]
         
-        mailService.sendEmail(subject, email, body)
-
-        return make_response(jsonify({"status":"send"}))
+        student = Student.Student.query.filter_by(studentId=studentid)
+        stu = student.first()
+        stts = stu.fee
+        if stts == 0:
+            return make_response(jsonify({"status":"fails"}))
+        else:
+            mailService.sendEmail(subject, email, body)
+            return make_response(jsonify({"status":"send"}))
 
 @app.route('/otplogin', methods = ["GET", "POST"])
 def account():

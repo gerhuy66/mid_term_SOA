@@ -10,7 +10,7 @@ from app.forms import forms
 @app.route("/",methods=['GET','POST'])
 @login_required
 def index():
-    return render_template('index.html',current_user =current_user)
+    return render_template('tution.html',current_user =current_user)
 
 @app.route("/login",methods=['GET','POST'])
 def login():
