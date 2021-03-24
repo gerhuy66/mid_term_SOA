@@ -2,6 +2,7 @@ import flask
 from marshmallow.fields import Email
 from app import app
 from flask import json, render_template, request, session, Response,jsonify,redirect,url_for,flash,make_response
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_required,login_user,logout_user,current_user
 from app.models import User,Student
 from app.forms import forms
@@ -15,11 +16,13 @@ def index():
 def login():
     form = forms.LoginForm()
     method = request.method
+
     if method == 'POST':
         user = User.User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verify(form.password.data):
+        if user is not None and check_password_hash(user.password_hash, form.password.data):
             login_user(user, form.remember_me.data)
             next = request.args.get('next')
+
             if next is None or not next.startswith('/'):
                 next = url_for('index')
             return redirect(next)

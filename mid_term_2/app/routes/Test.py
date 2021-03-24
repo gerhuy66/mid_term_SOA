@@ -6,11 +6,11 @@ from app.models import User,Student
 import pyotp
 import datetime, time
 
-@app.route("/test2",methods=['GET'])
-def test2():
-    totp = pyotp.TOTP('base32secret3232')
-    time.sleep(5)
-    return totp.now()
+@app.route("/test/<password>",methods=['GET'])
+def test2(password):
+    password = "123456"
+    password_hash = generate_password_hash(password)
+    return password_hash
     
 
 @app.route("/test/<studentId>", methods =['GET','POST'])
