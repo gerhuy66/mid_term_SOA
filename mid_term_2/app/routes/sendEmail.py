@@ -14,6 +14,7 @@ app.config['SECRET_KEY'] = 'xxxxxxxxx'
 mail = Mail(app)
 
 @app.route('/OTP', methods = ["GET", "POST"])
+@login_required
 def OTP():
     if request.method == "POST":
         sessNm = current_user.username+"_OTP"

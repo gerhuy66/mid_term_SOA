@@ -23,8 +23,8 @@ def history():
 @app.route("/getHistory",methods=['POST'])
 @login_required
 def gethis():
-    stu = Student.Student.query.filter_by(email=current_user.email).first()
-    his_query = His.His.query.filter_by(studentId=stu.studentId)
+    # stu = Student.Student.query.filter_by(email=current_user.email).first()
+    his_query = His.His.query.filter_by(payment_user=current_user.email)
     his_schema = His.HisSchema(many=True)
     his_data = his_schema.dump(his_query)
     return make_response(jsonify({"his":his_data}))

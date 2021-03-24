@@ -28,6 +28,14 @@
 // }
 
 function recieveOTP(){
+    var balance = $("#balance").val();
+    var fee = $("#stdFee").val();
+    if(parseInt(balance) < parseInt(fee))
+    {
+        alert("Not enough money!");
+        return;
+    }
+
   let rp = axios.post("/OTP",{
         email:stdInfo.email
     }); 
@@ -65,7 +73,9 @@ async function chargeStudentFee(){
         rp = await axios.post("/chargeStudentFee",ro);
         if(rp.data.status == "fail"){
             alert(rp.data.message);
-        }else{
+        }
+        if(rp.data.status == "success")
+        {
             alert("Success payment!");
         }
     }
@@ -128,8 +138,12 @@ async function loadDataHistory()
 {
     let rp = await axios.post("/getHistory");
     let datas = rp.data.his
+
+    let line = `<div>Ngày Thực Hiện--Đóng tiền cho--Số tiền--Người thực hiện</div>`
+    $("#historyBox").append(line);
+
     datas.forEach(function(item){
-        let line = `<div>${item.datetime}--${item.studentId}--${item.amount}</div>`
+        let line = `<div>${item.datetime}--${item.studentId}--${item.amount}--${item.payment_user}</div>`
         $("#historyBox").append(line);
     })
 }
