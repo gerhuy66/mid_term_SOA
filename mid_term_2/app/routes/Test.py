@@ -8,7 +8,6 @@ import datetime, time
 
 @app.route("/test/<password>",methods=['GET'])
 def test2(password):
-    password = "123456"
     password_hash = generate_password_hash(password)
     return password_hash
     
