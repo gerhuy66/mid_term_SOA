@@ -32,7 +32,7 @@ async function recieveOTP(){
     var fee = $("#stdFee").val();
     if(parseInt(balance) < parseInt(fee))
     {
-        alert("Not enough money!");
+        alert("Not enough balance!");
         return;
     }
 

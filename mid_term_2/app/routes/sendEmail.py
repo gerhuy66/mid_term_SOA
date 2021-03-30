@@ -24,7 +24,7 @@ def OTP():
         subject = 'Mã OTP'
 
         session.permanent = True
-        time = timedelta(minutes = 5)
+        time = timedelta(minutes = 30)
         if sessNm in session:
             app.config['PERMANENT_SESSION_LIFETIME'] = time #minutes: set theo phút
         
@@ -34,7 +34,7 @@ def OTP():
         student = Student.Student.query.filter_by(studentId=studentid)
         stu = student.first()
         stts = stu.fee
-        if stts == 0:
+        if stts <= 0:
             return make_response(jsonify({"status":"fails"}))
         else:
             mailService.sendEmail(subject, email, body)
