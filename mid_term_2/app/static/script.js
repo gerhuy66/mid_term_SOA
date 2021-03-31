@@ -143,13 +143,27 @@ function initView(){
 async function loadDataHistory()
 {
     let rp = await axios.post("/getHistory");
-    let datas = rp.data.his
+    let datas = rp.data.his;
+    let line = `<div class="grid-container">
+    <div class="item">Ngày giao dịch</div>
+    <div class="item">Thanh toán cho sv</div>
+    <div class="item">Số tiền đóng</div>
+    <div class="item">Người thực hiện</div>
+    </div>
+    `
 
-    let line = `<div>Ngày Thực Hiện--Đóng tiền cho--Số tiền--Người thực hiện</div>`
+    
     $("#historyBox").append(line);
 
-    datas.forEach(function(item){
-        let line = `<div>${item.datetime}--${item.studentId}--${item.amount}--${item.payment_user}</div>`
+    await datas.forEach(function(item){
+        let line = `<div class="grid-container">
+        <div class="item">${item.datetime}</div>
+        <div class="item">${item.studentId}</div>
+        <div class="item">${item.amount}</div>
+        <div class="item">${item.payment_user}</div>
+        </div>`
         $("#historyBox").append(line);
-    })
+    });
+
+
 }
