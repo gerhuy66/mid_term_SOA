@@ -35,7 +35,7 @@ def chageFee():
     his = His.His(stdId,dateStr,current_user.email,fee)
     mysql_db.session.add(his)
 
-    usr_query = User.User.query.filter_by(email=stu.email)
+    usr_query = User.User.query.filter_by(email=current_user.email)
     usr = usr_query.first()
     newBalance =usr.balance - float(fee)
     if newBalance < 0:
