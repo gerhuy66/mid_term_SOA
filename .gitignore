@@ -4252,3 +4252,8 @@ mid_term_2/app/services/__pycache__/mailService.cpython-39.pyc
 mid_term_2/migrations/__pycache__/env.cpython-39.pyc
 mid_term_2/migrations/versions/__pycache__/9f97c54768ee_add_column_studentid_to_student.cpython-39.pyc
 mid_term_2/.vscode/launch.json
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

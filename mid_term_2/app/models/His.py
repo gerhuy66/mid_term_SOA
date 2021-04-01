@@ -9,12 +9,13 @@ class His(mysql_db.Model):
     datetime = mysql_db.Column(mysql_db.String(20))
     amount = mysql_db.Column(mysql_db.Float)
     payment_user = mysql_db.Column(mysql_db.String(50))
-    
-    def __init__(self, studentId, datetime,payment_user, amount = 0):
+    payment_id = mysql_db.Column(mysql_db.String(100))
+    def __init__(self, studentId, datetime,payment_user,payment_id="",amount = 0):
         self.studentId = studentId
         self.datetime = datetime
         self.amount = amount
         self.payment_user = payment_user
+        self.payment_id = payment_id
 
     def create(self):
         mysql_db.session.add(self)
@@ -22,7 +23,7 @@ class His(mysql_db.Model):
         return self
 
     def __repr__(self):
-        return '<His %r, %r, %r, %r, %r>' % (self.id, self.studentId, self.datetime, self.amount, self.payment_user)
+        return '<His %r, %r, %r, %r, %r, %r>' % (self.id, self.studentId, self.datetime, self.amount, self.payment_user,self.payment_id)
 
 class HisSchema(ModelSchema):
     class Meta(ModelSchema.Meta):
@@ -34,3 +35,4 @@ class HisSchema(ModelSchema):
     datetime = fields.String(required=False)
     amount = fields.Number(required=True)
     payment_user = fields.String(required=True)
+    payment_id = fields.String(required=False)

@@ -28,3 +28,12 @@ def gethis():
     his_schema = His.HisSchema(many=True)
     his_data = his_schema.dump(his_query)
     return make_response(jsonify({"his":his_data}))
+
+@app.route("/checkPayment/<paymentId>",methods=['GET'])
+def checkPayment(paymentId):
+    check_count = His.His.query.filter_by(payment_id=paymentId).count()
+    if check_count == 0:
+        return make_response(jsonify({"status":"200","paymentId":paymentId,"paymentStatus":"unpaid"}))
+    else:
+        return make_response(jsonify({"status":"200","paymentId":paymentId,"paymentStatus":"paid"}))
+    
