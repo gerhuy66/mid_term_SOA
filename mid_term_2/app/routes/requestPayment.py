@@ -8,32 +8,33 @@ from datetime import date
 
 @app.route('/requestpayment',methods=['GET','POST'])
 def requestpayment():
-    totalcost = request.json['totalcost']
-    status = request.json['status']
-    orderDatetime = request.json['orderDatetime']
-    paymentUser = request.json['paymentUser']
-    password = request.json['password']
+    if request.method == "POST":
+        totalcost = request.json.get("totalcost")
+        status = request.json.get("status")
+        orderDatetime = request.json.get("orderDatetime")
+        paymentUser = request.json.get("paymentUser")
+        password = request.json.get("password")
 
-    puser_email = User.User.query.filter(User.User.email == paymentUser)
-    puser = puser_email.first()
+        puser_email = User.User.query.filter(User.User.email == paymentUser)
+        puser = puser_email.first()
 
-    if puser is not None and check_password_hash(puser.password_hash, password):
-        bauser = puser.balance
-        new_balance = bauser - totalcost
+        if puser is not None and check_password_hash(puser.password_hash, password):
+            bauser = puser.balance
+            new_balance = bauser - totalcost
 
-        dateStr = date.today().strftime("%d/%m/%Y")
-        payid = 'pm' + orderDatetime
-        his = His.His(paymentUser, dateStr, paymentUser, payid, totalcost)
-        mysql_db.session.add(his)
+            dateStr = date.today().strftime("%d/%m/%Y")
+            payid = 'pm' + orderDatetime
+            his = His.His(paymentUser, dateStr, paymentUser, payid, totalcost)
+            mysql_db.session.add(his)
 
-        if new_balance < 0:
-            return make_response(jsonify({"status":"fail","message":"Not enough balance"}))
+            if new_balance < 0:
+                return make_response(jsonify({"status":"fail","message":"Not enough balance"}))
 
-        puser_email.update(dict(balance=new_balance))
-        mysql_db.session.commit()
+            puser_email.update(dict(balance=new_balance))
+            mysql_db.session.commit()
 
-        return make_response(jsonify({"paymentUser": paymentUser , "orderDatetime" : orderDatetime, "status" : "paid", "totalcost" : totalcost, "message" : "payment success"}))
+            return make_response(jsonify({"paymentUser": paymentUser , "orderDatetime" : orderDatetime, "status" : "paid", "totalcost" : totalcost, "message" : "payment success"}))
 
-    return make_response(jsonify({"status":"fail","message":"Username or Password invalid"}))
+        return make_response(jsonify({"status":"fail","message":"Username or Password invalid"}))
     
    
